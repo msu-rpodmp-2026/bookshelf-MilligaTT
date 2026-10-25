@@ -33,8 +33,8 @@ void task2() {
   }
 
   stdout.write('Оценка (0–5): ');
-  final String ratingRaw =
-      (stdin.readLineSync(encoding: utf8) ?? '').replaceAll(',', '.');
+  final String ratingRaw = (stdin.readLineSync(encoding: utf8) ?? '')
+      .replaceAll(',', '.');
   double rating = double.tryParse(ratingRaw) ?? 0.0;
   if (rating < 0) {
     rating = 0.0;
@@ -226,7 +226,7 @@ void demoNullAware() {
   final int? length = maybeName?.length;
   print('null?.length = $length');
 
-  final String realName = 'Дарт'; 
+  final String realName = 'Дарт';
   print("'Дарт'.length = ${realName.length}");
 
   final String fallback = maybeName ?? 'значение по умолчанию';
@@ -273,7 +273,11 @@ void demoCascade() {
     ..write('Год: 1967');
   print('С каскадом:\n$cascade');
 
-  final List<String> shelf = <String>['Мастер и Маргарита', '1984', 'Война и мир'];
+  final List<String> shelf = <String>[
+    'Мастер и Маргарита',
+    '1984',
+    'Война и мир',
+  ];
   print('Список: $shelf');
 }
 
