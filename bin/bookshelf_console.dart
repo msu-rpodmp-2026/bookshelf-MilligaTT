@@ -45,7 +45,7 @@ void task2() {
   stdout.write('Прочитана (да/нет): ');
   final String readRaw = stdin.readLineSync(encoding: utf8) ?? 'нет';
   final String readNorm = readRaw.trim().toLowerCase();
-  final bool isRead = readNorm == 'да' || readNorm == '+';
+  final bool isRead = readNorm == 'да';
 
   final String category;
   if (pages <= 150) {
