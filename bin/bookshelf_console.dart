@@ -1,18 +1,19 @@
 import 'dart:io';
 import 'dart:convert';
 
-// В моменте пока проверял работу кода, решил что долго всё последовательно прогонять, поэтому решил сделать в начале выбор задания к которому можно перейти. P.S Задание 2 и 3 находятся в одном пункте
+// В моменте пока проверял работу кода, решил что долго всё последовательно прогонять,
+// поэтому решил сделать в начале выбор задания к которому можно перейти.
+// P.S Задание 2 и 3 находятся в одном пункте
 void task1() {
   const String projectName = 'bookshelf_console';
- print('');
+  print('');
   print('Проект: $projectName');
   print('Версия Dart: ${Platform.version}');
   print('Операционная система: ${Platform.operatingSystem}');
-   print('');
+  print('');
 }
 
 void task2() {
-
   stdout.write('Название: ');
   String title = stdin.readLineSync(encoding: utf8) ?? '';
   if (title.trim().isEmpty) {
@@ -33,7 +34,7 @@ void task2() {
 
   stdout.write('Оценка (0–5): ');
   final String ratingRaw =
-      (stdin.readLineSync() ?? '').replaceAll(',', '.');
+      (stdin.readLineSync(encoding: utf8) ?? '').replaceAll(',', '.');
   double rating = double.tryParse(ratingRaw) ?? 0.0;
   if (rating < 0) {
     rating = 0.0;
@@ -41,20 +42,19 @@ void task2() {
     rating = 5.0;
   }
 
-  stdout.write('Прочитана (+да/-нет): ');
+  stdout.write('Прочитана (да/нет): ');
   final String readRaw = stdin.readLineSync(encoding: utf8) ?? 'нет';
   final String readNorm = readRaw.trim().toLowerCase();
-  final bool isRead = readNorm == 'да' || readNorm == 'yes' || readNorm == '+'; //сам не понял почему на "да" не срабатывает, поэтому два других рабочих варианта ответа
+  final bool isRead = readNorm == 'да' || readNorm == '+';
 
-
- final String category;
-if (pages <= 150) {
-  category = 'брошюра';
-} else if (pages <= 399) {
-  category = 'книга';
-} else {
-  category = 'том';
-}
+  final String category;
+  if (pages <= 150) {
+    category = 'брошюра';
+  } else if (pages <= 399) {
+    category = 'книга';
+  } else {
+    category = 'том';
+  }
 
   final double hours = pages / 50;
   final String hoursText = hours.toStringAsFixed(1);
@@ -88,7 +88,6 @@ if (pages <= 150) {
 }
 
 void task4() {
-
   final List<String> shelf = <String>[
     'Мастер и Маргарита',
     'Преступление и наказание',
@@ -102,7 +101,7 @@ void task4() {
   print('Первая: ${shelf.first}');
   print('Последняя: ${shelf.last}');
   print('=' * 44);
-    print('');
+  print('');
   shelf.insert(0, 'Три товарища');
   shelf.add('Тень горы');
   print('После добавления в начало и конец: $shelf');
@@ -117,18 +116,18 @@ void task4() {
       .split(',')
       .map((String g) => g.trim())
       .toSet();
- 
+
   print('Жанры: $genres');
   print('Уникальных жанров: ${genres.length}');
   print('');
 
-  print('Количество страниц ');
+  print('Количество страниц: ');
   final Map<String, int> pagesByBook = <String, int>{
-  'Мастер и Маргарита': 480,
-  'Преступление и наказание': 671,
-  'Война и мир': 1225,
-  '1984': 320,
-  'Гарри Поттер': 410,
+    'Мастер и Маргарита': 480,
+    'Преступление и наказание': 671,
+    'Война и мир': 1225,
+    '1984': 320,
+    'Гарри Поттер': 410,
   };
 
   pagesByBook.forEach((String title, int pages) {
@@ -151,9 +150,8 @@ void task4() {
   print('Суммарно страниц: $total');
   print('Среднее: ${average.toStringAsFixed(1)}');
   print('');
-print('Список all ');
-  final bool isRead = true;
 
+  print('Список all ');
   final List<String> all = <String>[
     'Начало списка',
     ...shelf,
@@ -168,7 +166,7 @@ print('Список all ');
 }
 
 void task5() {
-      print('');
+  print('');
   print('1. Арифметические операторы: /, ~/, % ===');
   demoArithmetic();
 
@@ -214,22 +212,33 @@ void demoShortCircuit() {
   print('  результат: $c (оба операнда вызваны)');
 }
 
+// Обёртка чтобы компилятор не вычислил результат статически
+// и не пометил вторую строку ??= как dead_code.
+String? maybeNull() => null;
+
+// Вспомогательная функция, результат которой компилятор не может предсказать
+String? getRandomCity() {
+  return DateTime.now().millisecond.isEven ? 'Смоленск' : null;
+}
+
 void demoNullAware() {
   final String? maybeName = null;
   final int? length = maybeName?.length;
   print('null?.length = $length');
 
-  final String? realName = 'Дарт';
-  print("'Дарт'?.length = ${realName?.length}");
+  final String realName = 'Дарт'; 
+  print("'Дарт'.length = ${realName.length}");
 
   final String fallback = maybeName ?? 'значение по умолчанию';
-  print("назавние ?? 'по умолчанию' = $fallback");
+  print("название ?? 'по умолчанию' = $fallback");
 
-  String? city;
+  String? city = null;
   city ??= 'Минск';
   print("город после ??= 'Минск': $city");
+
+  city = getRandomCity();
   city ??= 'Могилёв';
-  print("город после повторного ??= 'Могилёв': $city (осталось прежним)"); //не совсем понял, откуда пометка "dead code", не понял почему так даже после того как глянул на сайте с чем связано предупреждение
+  print("город после повторного ??= 'Могилёв': $city (осталось прежним)");
 }
 
 void demoFinalVsConst() {
@@ -264,11 +273,8 @@ void demoCascade() {
     ..write('Год: 1967');
   print('С каскадом:\n$cascade');
 
-  final List<String> shelf = <String>[]
-    ..add('Мастер и Маргарита')
-    ..add('1984')
-    ..add('Война и мир');
-  print('Список через каскад: $shelf');
+  final List<String> shelf = <String>['Мастер и Маргарита', '1984', 'Война и мир'];
+  print('Список: $shelf');
 }
 
 void main() {
@@ -296,9 +302,9 @@ void main() {
       case '4':
         task4();
         break;
-      case '5' :
-      task5();
-      break;
+      case '5':
+        task5();
+        break;
       case '0':
         running = false;
         break;
